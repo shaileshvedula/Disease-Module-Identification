@@ -21,7 +21,6 @@ import java.lang.*;
  */
 
 public class PostProcessing {
-    DataDirectory dataDirectory;
     String[] outputFiles;
     BufferedReader inputStream;
     BufferedReader outputStream;
@@ -54,7 +53,7 @@ public class PostProcessing {
                         String[] nodes = clusters[j].split("\t");
                         if (nodes.length >= 3 && nodes.length <= 100) {
                             String joined = StringUtils.join(nodes, "\t");
-                            outputStream.write(Integer.toString(temp) + "\t" + "0.5" + "\t" + joined);
+                            outputStream.write(Integer.toString(temp+1) + "\t" + "0.5" + "\t" + joined);
                             outputStream.write("\n");
                             temp+=1;
                         }
