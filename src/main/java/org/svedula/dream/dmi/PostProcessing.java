@@ -27,17 +27,20 @@ public class PostProcessing {
     BufferedReader outputStream;
     String outDir;
     String processedDir;
+    File file;
 
     public void PostProcess() throws IOException {
         outDir = "/Users/ishan/Dream/output";
-        processedDir = "/Users/ishan/Dream/processed";
-        dataDirectory = new DataDirectory(outDir);
-        outputFiles = dataDirectory.GetDataFiles();
+        processedDir = "/Users/ishan/Dream/processed/";
+        RequiredFileExtension extn = new RequiredFileExtension("txt");
+        file = new File(outDir);
+        outputFiles = file.list(extn);
         String line;
+        int Total_cluster = 0;
         for (int i = 0; i < outputFiles.length; ++i) {
             int temp = 0;
             inputStream = null;
-            inputStream = new BufferedReader(new FileReader(outputFiles[i]));
+            inputStream = new BufferedReader(new FileReader(outDir + "/" + outputFiles[i]));
 
             File processOut = new File(processedDir + outputFiles[i]);
             FileOutputStream fos = new FileOutputStream(processOut);
@@ -57,6 +60,7 @@ public class PostProcessing {
                     }
                 }
                 System.out.println("The number of required clusters in the network:" + outputFiles[i] + "=" + temp);
+                Total_cluster+=temp;
             } finally {
                 if (inputStream != null) {
                     inputStream.close();
@@ -66,5 +70,6 @@ public class PostProcessing {
                 }
             }
         }
+        System.out.println("The total number of clusters of required size are: " + Total_cluster);
     }
 }
