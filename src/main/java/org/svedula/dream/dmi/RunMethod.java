@@ -12,9 +12,7 @@
 
 package org.svedula.dream.dmi;
 
-import com.google.common.collect.Table;
 import java.io.IOException;
-import java.lang.*;
 
 /**
  * This class contains the main method
@@ -23,10 +21,24 @@ import java.lang.*;
 public class RunMethod {
 
     public static void main(String args[]) throws IOException {
-        DataDirectory dataDirectory = new DataDirectory();
+        DataDirectory dataDirectory = new DataDirectory("/Users/ishan/Dream/Data");
         String[] InputFiles = dataDirectory.GetDataFiles();
-        TransitionMatrix transitionMatrix = new TransitionMatrix(InputFiles[0]);
-        transitionMatrix.MakeTransitionMatrix();
-
+        String MCL_HOME = "/Users/ishan/local/bin";
+        String outDir = "/Users/ishan/Dream/output/";
+        String inDir = "/Users/ishan/Dream/Data/";
+        MCL mcl = new MCL();
+        for (int i = 0; i < InputFiles.length; ++i) {
+            String[] out = InputFiles[i].split("/");
+            String[] temp = out[out.length-1].split("\\.");
+            String outfile = "out." + temp[0];
+            String COMMAND = MCL_HOME + "/mcl" + " " + InputFiles[i] + " " + "--abc" + " " + "-o" +" " + outDir + outfile + " " + "-I 6";
+            try {
+                mcl.RunMcl(COMMAND);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        PostProcessing postProcessing = new PostProcessing();
+        postProcessing.PostProcess();
     }
 }
